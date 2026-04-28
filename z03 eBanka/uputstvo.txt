@@ -1,0 +1,34 @@
+Uputstvo za pokretanje aplikacije:
+
+1. Otvorite terminal u folderu "z03 eBanka".
+2. Kompajlirajte sve Java fajlove:
+   javac *.java
+
+3. U prvom terminalu pokrenite server:
+   java Server
+
+4. U drugom terminalu, u istom folderu, pokrenite klijenta:
+   java Klijent
+
+5. U meniju birate opcije:
+   a - transfer sa dinarskog na devizni racun
+   b - transfer sa deviznog na dinarski racun
+   c - provera stanja
+   d - kraj rada klijenta
+
+6. U aplikaciji je koriscen fiksni kurs:
+   117.00
+
+7. Primer korisnika koji postoje na serveru:
+   JBK123456
+   JBK223456
+   JBK323456
+   JBK423456
+   JBK523456
+   JBK623456
+   JBK723456
+   JBK823456
+   JBK923456
+   JBK103456
+
+8. Server gasite pritiskom na Enter u server terminalu.

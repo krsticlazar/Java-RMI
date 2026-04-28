@@ -1,0 +1,19 @@
+Uputstvo za pokretanje aplikacije:
+
+1. Otvorite terminal u folderu "z01 Matematicki kviz".
+2. Kompajlirajte sve Java fajlove:
+   javac *.java
+
+3. U prvom terminalu pokrenite server:
+   java Server
+
+4. U drugom terminalu, u istom folderu, pokrenite klijenta:
+   java Klijent
+
+5. Na klijentskoj strani unosite odgovore u formatu:
+   a
+   b
+   c
+
+6. Za novo testiranje ponovo pokrenite klijenta.
+   Server gasite pritiskom na Enter u server terminalu.

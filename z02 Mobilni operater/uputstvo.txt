@@ -1,0 +1,32 @@
+Uputstvo za pokretanje aplikacije:
+
+1. Otvorite terminal u folderu "z02 Mobilni operater".
+2. Kompajlirajte sve Java fajlove:
+   javac *.java
+
+3. U prvom terminalu pokrenite server:
+   java Server
+
+4. U drugom terminalu, u istom folderu, pokrenite klijenta:
+   java Klijent
+
+5. U meniju birate opcije:
+   a - uplata minuta
+   b - uplata poruka
+   c - uplata interneta
+   d - provera stanja
+   e - kraj rada klijenta
+
+6. Primer brojeva koji postoje na serveru:
+   060123456
+   060223456
+   060323456
+   060423456
+   060523456
+   061123456
+   061223456
+   061323456
+   062123456
+   063123456
+
+7. Server gasite pritiskom na Enter u server terminalu.
