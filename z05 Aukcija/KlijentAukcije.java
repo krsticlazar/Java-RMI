@@ -26,7 +26,7 @@ public class KlijentAukcije implements Serializable {                  // RMI ov
     }
 
     @Override
-    public String toString() {                                         // Prikaz aktivnog licitanta na klijentskoj strani.
+    public String toString() {                                        
         return klijentAukcijeId + " - " + ime + " " + prezime;
     }
 }

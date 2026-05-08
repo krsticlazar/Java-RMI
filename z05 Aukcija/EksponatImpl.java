@@ -8,14 +8,14 @@ public class EksponatImpl extends UnicastRemoteObject implements Eksponat {   //
     private KlijentAukcije klijentAukcije;                    
 
     public EksponatImpl(String id, String naziv, int cena) throws RemoteException {
-        super();                                                               // Export remote objekta.
+        super();                                                             
         this.id = id;
         this.naziv = naziv;
         this.cena = cena;
     }
 
     @Override
-    public synchronized void prijaviLicitaciju(KlijentAukcije ka) throws RemoteException {   // Pamti ko je poslednji prijavljen za licitaciju.
+    public synchronized void prijaviLicitaciju(KlijentAukcije ka) throws RemoteException {   
         klijentAukcije = ka;
     }
 

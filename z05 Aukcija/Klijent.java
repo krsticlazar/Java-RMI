@@ -53,14 +53,14 @@ public class Klijent {
                 if ("a".equalsIgnoreCase(opcija)) {                                      // Licitacija nad izabranim eksponatom.
                     System.out.println("Za koliko uvecavate iznos eksponata?");
                     System.out.print("/>");
-                    int iznos = Integer.parseInt(scanner.nextLine().trim());              // Iznos za koji se povecava cena.
+                    int iznos = Integer.parseInt(scanner.nextLine().trim());              
 
-                    eksponat.povecajCenu(iznos);                                         // Menja cenu na serveru.
+                    eksponat.povecajCenu(iznos);                                         
                     eksponat.prijaviLicitaciju(klijentAukcije);                          // Server pamti ko trenutno licitira.
 
                     System.out.println("Nova cena eksponata je:");
                     System.out.println(eksponat.vratiCenu());
-                } else if ("b".equalsIgnoreCase(opcija)) {                               // Odustajanje od licitacije za dati eksponat.
+                } else if ("b".equalsIgnoreCase(opcija)) {                               
                     eksponat.odustaniOdLicitacije(klijentAukcije.vratiKlijentAukcijeId());   // Brise klijenta ako je on trenutno prijavljen.
                     System.out.println("Odustajanje od licitacije je evidentirano.");
                 }
