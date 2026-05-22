@@ -1,122 +1,174 @@
-# Matematicki kviz - objasnjenje strukture
+# Matematicki kviz - objasnjenje
 
-## Ideja aplikacije
+## Ideja zadatka
 
-Ova aplikacija koristi Java RMI da bi klijent pozivao metode koje se izvrsavaju na serveru. Server cuva pitanja, tacne odgovore i broj poena. Klijent samo prikazuje pitanja i salje unete odgovore.
+Klijent preko RMI-ja pristupa kvizu na serveru. Server cuva tri pitanja, tacne odgovore, trenutni indeks pitanja i broj poena.
 
-Najvaznija podela je:
+## Struktura
 
-- udaljeni RMI objekat: `Kviz`
-- obican serijalizovan objekat: `Pitanje`
-- serverska ulazna tacka: `Server`
-- klijentska ulazna tacka: `Klijent`
+- `Kviz` je glavni remote interfejs. Klijent preko njega pokrece kviz, trazi pitanje, salje odgovor i cita broj poena.
+- `KvizImpl` je serverska implementacija. Ona cuva niz pitanja, niz tacnih odgovora, indeks trenutnog pitanja i poene.
+- `Pitanje` je `Serializable`, jer se pitanje salje klijentu kao kopija podataka.
+- `PitanjeImpl` cuva tekst pitanja i ponudjene odgovore.
+- `Server` registruje `KvizImpl` pod imenom `Kviz`.
+- `Klijent` radi `lookup`, prikazuje pitanja i salje odgovore.
 
-## Tok izvrsavanja
+## Sta ide na ispitu
+
+Najbitnije je prepoznati da je samo `Kviz` remote objekat. `Pitanje` ne mora da bude remote zato sto klijent samo cita tekst pitanja, pa je dovoljno da se pitanje prenese po vrednosti kao `Serializable`.
+
+Minimalna logika `KvizImpl`:
+
+- `pocetak()` postavlja poene na 0 i indeks na 0;
+- `vratiPitanje()` vraca pitanje na trenutnom indeksu;
+- `odgovori(odg)` proverava odgovor, povecava poene ako je tacan i prelazi na sledece pitanje;
+- `vratiBrojPoena()` vraca rezultat.
+
+## Tok rada
 
 1. Pokrene se `Server`.
-2. Server pravi registry na portu `1099`.
-3. Server kreira `KvizImpl` i objavi ga pod imenom `Kviz`.
-4. Pokrene se `Klijent`.
-5. Klijent preko `Naming.lookup(...)` dobija referencu na udaljeni objekat `Kviz`.
-6. Klijent poziva `pocetak()`, zatim tri puta trazi pitanje i salje odgovor.
-7. Server vodi racuna o indeksu pitanja i broju poena.
-8. Na kraju klijent trazi ukupan broj poena i ispisuje ga.
+2. Server kreira i registruje `KvizImpl`.
+3. Klijent dobija remote referencu na `Kviz`.
+4. Klijent poziva `pocetak()`.
+5. Za svako pitanje poziva `vratiPitanje()`, prikazuje tekst i salje odgovor kroz `odgovori(...)`.
+6. Na kraju poziva `vratiBrojPoena()`.
 
-## Objasnjenje svakog fajla
+## Za ispit
 
-### `Pitanje.java`
+U ispitnoj svesci ne treba pisati celu konzolnu aplikaciju sa svim ispisima, vec delove koji pokazuju RMI strukturu i logiku kviza.
 
-Interfejs za jedno pitanje. Nije RMI interfejs, nego obican serijalizovani tip podataka koji moze da se posalje sa servera na klijenta.
+Iz teksta zadatka treba da zakljucis sledece:
 
-Metoda:
+- `Kviz` je remote objekat zato sto klijent poziva njegove metode preko RMI-ja.
+- `Pitanje` moze da bude `Serializable`, jer klijent samo dobija tekst pitanja i ponudjene odgovore kao kopiju.
+- Server cuva pitanja, tacne odgovore, trenutni indeks i broj poena.
+- Klijent ne proverava tacnost odgovora lokalno, nego odgovor salje serveru.
 
-- `vratiTekst()` vraca pitanje i ponudjene odgovore kao gotov tekst za stampu.
+Obavezno treba napisati:
 
-### `PitanjeImpl.java`
+- remote interfejs `Kviz`;
+- serializable interfejs ili klasu `Pitanje`;
+- implementaciju `KvizImpl`;
+- konstruktor koji formira 3 pitanja i 3 tacna odgovora;
+- logiku metoda `pocetak`, `vratiPitanje`, `odgovori` i `vratiBrojPoena`;
+- osnovni server `rebind`;
+- osnovni klijentski `lookup` i redosled poziva metoda.
 
-Konkretna implementacija pitanja. Cuva:
+Ne mora detaljno da se pise:
 
-- tekst pitanja
-- odgovor pod opcijom `a`
-- odgovor pod opcijom `b`
-- odgovor pod opcijom `c`
+- kompletan unos preko `Scanner`;
+- kompletan lep ispis menija;
+- sva hvatanja izuzetaka;
+- validacija pogresnih odgovora van `a`, `b`, `c`;
+- `System.in.read()`;
+- detaljni komentari i formatiranje.
 
-Ova klasa nema RMI logiku. Njena uloga je samo da zapakuje podatke o pitanju.
+Minimalni remote interfejs:
 
-### `Kviz.java`
+```java
+public interface Kviz extends Remote {
+    public void pocetak() throws RemoteException;
+    public Pitanje vratiPitanje() throws RemoteException;
+    public void odgovori(String odg) throws RemoteException;
+    public int vratiBrojPoena() throws RemoteException;
+}
+```
 
-Glavni udaljeni interfejs aplikacije. Ovo je interfejs koji klijent dobija od servera.
+Minimalni `Pitanje` tip:
 
-Metode:
+```java
+public interface Pitanje extends Serializable {
+    public String vratiTekst();
+}
+```
 
-- `pocetak()` resetuje stanje kviza
-- `vratiPitanje()` vraca sledece pitanje
-- `odgovori(String odg)` prima korisnikov odgovor
-- `vratiBrojPoena()` vraca ukupan broj poena
+`PitanjeImpl` nije remote klasa. Ona samo implementira `Pitanje` i cuva podatke koji se serijalizuju:
 
-Posto je ovo RMI interfejs:
+```java
+public class PitanjeImpl implements Pitanje {
+    private String tekst;
+    private String a;
+    private String b;
+    private String c;
 
-- nasledjuje `Remote`
-- sve metode imaju `throws RemoteException`
+    public String vratiTekst() {
+        return tekst + " a) " + a + " b) " + b + " c) " + c;
+    }
+}
+```
 
-### `KvizImpl.java`
+Pocetak `KvizImpl` treba da pokazuje da je to remote implementacija:
 
-Serverska implementacija interfejsa `Kviz`.
+```java
+public class KvizImpl extends UnicastRemoteObject implements Kviz {
+    private Pitanje[] pitanja;
+    private String[] tacniOdgovori;
+    private int indeks;
+    private int brojPoena;
 
-Najvaznija polja:
+    public KvizImpl() throws RemoteException {
+        super();
+    }
+}
+```
 
-- `pitanja` - niz pitanja
-- `tacniOdgovori` - niz tacnih odgovora istim redosledom kao pitanja
-- `indeksTrenutnogPitanja` - pokazuje koje pitanje sledi
-- `indeksPoslednjegPitanja` - pamti za koje pitanje proveravamo odgovor
-- `brojPoena` - broj tacnih odgovora
+U interfejsu `Kviz` metode samo imaju povratni tip, naziv i `throws RemoteException`, npr. `void pocetak()` ili `int vratiBrojPoena()`.
 
-Bitna ideja:
+U implementaciji `KvizImpl` te metode treba pisati kao `public synchronized`, npr:
 
-- server vraca pitanje klijentu
-- server pamti koje je pitanje upravo poslato
-- kada klijent posalje odgovor, server proverava odgovor prema tom zapamcenom indeksu
+```java
+public synchronized void pocetak() throws RemoteException
+public synchronized Pitanje vratiPitanje() throws RemoteException
+public synchronized void odgovori(String odg) throws RemoteException
+public synchronized int vratiBrojPoena() throws RemoteException
+```
 
-Klasa nasledjuje `UnicastRemoteObject` zato sto predstavlja udaljeni objekat.
+`public` je potrebno jer implementiras metode iz interfejsa, a `synchronized` je korisno zato sto remote objekat moze istovremeno da pozove vise klijenata, pa se cuva zajednicko stanje kviza.
 
-### `Server.java`
+Minimalna serverska logika:
 
-Pokrece serversku stranu aplikacije.
+```java
+public synchronized void pocetak() throws RemoteException {
+    brojPoena = 0;
+    indeks = 0;
+}
 
-Radi tri bitne stvari:
+public synchronized Pitanje vratiPitanje() throws RemoteException {
+    return pitanja[indeks];
+}
 
-1. pravi ili koristi postojeci RMI registry
-2. kreira `KvizImpl`
-3. vezuje objekat za ime `Kviz`
+public synchronized void odgovori(String odg) throws RemoteException {
+    if (tacniOdgovori[indeks].equals(odg)) {
+        brojPoena++;
+    }
+    indeks++;
+}
 
-Zbog toga klijent kasnije moze da uradi `Naming.lookup("rmi://localhost:1099/Kviz")`.
+public synchronized int vratiBrojPoena() throws RemoteException {
+    return brojPoena;
+}
+```
 
-### `Klijent.java`
+Minimalni server:
 
-Pokrece klijentsku stranu aplikacije.
+```java
+LocateRegistry.createRegistry(1099);
+Naming.rebind("rmi://localhost:1099/Kviz", new KvizImpl());
+```
 
-Njegov posao je:
+Minimalni klijent:
 
-- povezivanje na server
-- pozivanje `pocetak()`
-- preuzimanje pitanja
-- citanje odgovora sa tastature
-- slanje odgovora serveru
-- trazenje konacnog broja poena
+```java
+Kviz kviz = (Kviz) Naming.lookup("rmi://localhost:1099/Kviz");
+kviz.pocetak();
 
-Klijent ne zna koji je odgovor tacan. Tacna resenja zna samo server.
+for (int i = 0; i < 3; i++) {
+    Pitanje p = kviz.vratiPitanje();
+    System.out.println(p.vratiTekst());
+    kviz.odgovori(odg);
+}
 
-## Kako da razmisljas o obrascu
+System.out.println(kviz.vratiBrojPoena());
+```
 
-Ovaj zadatak pokazuje osnovni obrazac za male RMI aplikacije:
-
-1. Napravis jedan glavni `Remote` interfejs.
-2. Napravis `Impl` klasu koja nasledjuje `UnicastRemoteObject`.
-3. Server registruje objekat pod nekim imenom.
-4. Klijent radi `lookup`.
-5. Ako treba da vracas "obican podatak", vracas serijalizovan objekat umesto novog udaljenog objekta.
-
-U ovom primeru je:
-
-- `Kviz` udaljeni objekat
-- `Pitanje` obican serijalizovan objekat
+Najbitnija recenica za obrazlozenje: `Kviz` je remote zato sto cuva stanje kviza na serveru, dok je `Pitanje` serializable zato sto se klijentu salje samo kopija podataka za prikaz.

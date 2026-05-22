@@ -1,0 +1,27 @@
+Struktura:
+
+Shared  - remote interfejsi Broker i MqttClient, kao i serializable klasa Poruka
+Server  - implementacija brokera i serverska main klasa
+Klijent - klijentska main klasa i callback implementacija
+
+Server:
+
+cd Server
+javac -d . ..\Shared\*.java *.java
+java Server
+
+Klijent koji slusa topic:
+
+cd Klijent
+javac -d . ..\Shared\*.java *.java
+java Klijent sub sport
+
+Drugi klijent koji salje poruku:
+
+cd Klijent
+java Klijent pub sport Gol "Domaci tim vodi 1:0"
+
+Ako server nije na istom racunaru:
+
+java Klijent IP_ADRESA_SERVERA sub sport
+java Klijent IP_ADRESA_SERVERA pub sport Gol "Domaci tim vodi 1:0"

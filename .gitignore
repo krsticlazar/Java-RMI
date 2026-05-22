@@ -1,2 +1,4 @@
-zips/
+.zips/
+.docs/
 *.class
+.vscode/

@@ -1,4 +1,4 @@
-Iz foldera "z03 eBanka":
+Iz foldera "APR26":
 
 javac *.java
 java Server
@@ -7,5 +7,6 @@ U drugom terminalu:
 
 java Klijent
 
-Test JBK:
-JBK123456
+Primer unosa:
+10
+30

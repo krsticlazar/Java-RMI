@@ -1,0 +1,27 @@
+Struktura:
+
+Shared  - remote interfejsi FootballScore, Match i Callback, kao i serializable klasa Stadium
+Server  - implementacije FootballScoreImpl i MatchImpl, plus serverska main klasa
+Klijent - ClientUser i ClientAdmin
+
+Server:
+
+cd Server
+javac -d . ..\Shared\*.java *.java
+java Server
+
+Klijent koji prati rezultate:
+
+cd Klijent
+javac -d . ..\Shared\*.java *.java
+java ClientUser
+
+Admin klijent koji dodaje gol:
+
+cd Klijent
+java ClientAdmin
+
+Ako server nije na istom racunaru:
+
+java ClientUser IP_ADRESA_SERVERA
+java ClientAdmin IP_ADRESA_SERVERA

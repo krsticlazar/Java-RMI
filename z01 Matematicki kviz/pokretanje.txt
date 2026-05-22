@@ -1,19 +1,21 @@
-Uputstvo za pokretanje aplikacije:
+Struktura:
 
-1. Otvorite terminal u folderu "z01 Matematicki kviz".
-2. Kompajlirajte sve Java fajlove:
-   javac *.java
+Shared  - zajednicki ugovor i serijalizovani tipovi koje moraju da imaju i server i klijent
+Server  - serverska implementacija i serverska main klasa
+Klijent - klijentska main klasa
 
-3. U prvom terminalu pokrenite server:
-   java Server
+Server racunar:
 
-4. U drugom terminalu, u istom folderu, pokrenite klijenta:
-   java Klijent
+cd Server
+javac -d . ..\Shared\*.java *.java
+java Server
 
-5. Na klijentskoj strani unosite odgovore u formatu:
-   a
-   b
-   c
+Klijent racunar:
 
-6. Za novo testiranje ponovo pokrenite klijenta.
-   Server gasite pritiskom na Enter u server terminalu.
+cd Klijent
+javac -d . ..\Shared\*.java *.java
+java Klijent
+
+Ako server nije na istom racunaru, klijent se pokrece ovako:
+
+java Klijent IP_ADRESA_SERVERA
