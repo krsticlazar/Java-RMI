@@ -6,14 +6,18 @@ The goal of the repository is to keep the examples simple, close to classroom/la
 
 ## Contents
 
-- `z01 Matematicki kviz` - mathematical quiz RMI example, including a separated `Server`, `Klijent`, and `Shared` structure.
-- `z02 Mobilni operater` - mobile operator simulation with remote user operations and account state handling.
-- `z03 eBanka` - electronic banking simulation with remote banking/user logic.
-- `z04 Prijava ispita` - exam registration system implemented with Java RMI.
-- `z05 Aukcija` - auction system with remote auction and exhibit objects.
-- `APR26` - exam-style task for generating prime numbers with callback-based delivery.
-- `JUN24` - exam-style MQTT broker simulation using topics, publishing, subscribing, and callbacks.
-- `KOL124` - football score tracking system with remote matches and result-change callbacks.
+- `Lab 01` - mathematical quiz RMI example.
+- `Lab 02` - mobile operator simulation.
+- `Lab 03` - electronic banking simulation.
+- `Lab 04` - exam registration system.
+- `Lab 05` - auction system with remote exhibit objects.
+- `Ispit APR26` - prime-number generation with callback-based delivery.
+- `Ispit JUN24` - MQTT broker simulation with publishing, subscriptions, and callbacks.
+- `Ispit KOL124` - football score tracking with remote matches and callbacks.
+- `Ispit KOL126` - stock-price tracking with callback notifications.
+- `Dodatni 01` - electronic voting with server-side `Map` and `Set` state.
+- `Dodatni 02` - digital library with remote books and serializable snapshots.
+- `Dodatni 03` - FIFO queue system with per-ticket callbacks.
 - `.docs` - prepared notes and final explanations based on Java RMI lectures.
 - `.zips` - reference examples from practical classes.
 
@@ -39,7 +43,7 @@ The repository focuses on core Java RMI concepts:
 
 ## Running Examples
 
-The examples are intentionally kept as plain Java projects. In most folders, the workflow is:
+All Java files for a task are kept directly in that task's folder. The workflow is:
 
 ```powershell
 javac *.java
@@ -47,15 +51,8 @@ java Server
 java Klijent
 ```
 
-For exercises that are split into `Server`, `Klijent`, and `Shared`, compile from the server or client folder with:
-
-```powershell
-javac -d . ..\Shared\*.java *.java
-```
-
 Each task folder contains its own run instructions.
 
 ## Purpose
 
 This repository is primarily a study workspace for understanding Java RMI through practical tasks. It is also organized as exam preparation material, with notes focused on what should be written in an exam notebook rather than only on complete runnable applications.
-

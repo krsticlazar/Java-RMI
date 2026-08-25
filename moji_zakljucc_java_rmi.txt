@@ -1,0 +1,6 @@
+Tipican kod:
+
+Servis servis = (Servis) Naming.lookup("rmi://localhost:1099/Servis");
+servis.metoda();
+
+Za ispit: klijent ne pravi new ServisImpl(). To bi bio lokalni objekat, ne RMI poziv. On preko Naming lookup-a trazi od stuba objekat i poziva udaljene metode.

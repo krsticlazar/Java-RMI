@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/*.class": true,
+        "**/.project": true,
+        "**/.classpath": true,
+        "**/.settings": true,
+        "**/bin": true
+    },
+    "explorer.decorations.colors": false,
+    "java.format.settings.url": ".vscode/java-formatter.xml"
+}
